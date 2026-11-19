@@ -225,11 +225,12 @@ export default function App() {
         onOpenCart={() => setCartOpen(true)}
         onQuickAddProduct={handleQuickAddRelated}
         onShowToast={showToast}
+        compact={viewMode === 'dashboard'}
       />
 
       {/* Workspace Mode Switcher Bar */}
       <div className="bg-white border-b border-[#E5E7EB]">
-        <div className="max-w-[1240px] mx-auto px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-[12px]">
+        <div className="max-w-[1400px] mx-auto px-4 py-1.5 flex flex-wrap items-center justify-between gap-2 text-[12px]">
           <div className="flex items-center gap-1.5 bg-[#EFF0F5] p-1 rounded-[4px]">
             <button
               type="button"

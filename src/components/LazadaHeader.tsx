@@ -18,6 +18,7 @@ interface LazadaHeaderProps {
   onOpenCart: () => void;
   onQuickAddProduct: (product: RelatedProduct) => void;
   onShowToast: (msg: string) => void;
+  compact?: boolean;
 }
 
 const SEARCH_SUGGESTIONS = [
@@ -44,6 +45,7 @@ export const LazadaHeader: React.FC<LazadaHeaderProps> = ({
   onOpenCart,
   onQuickAddProduct,
   onShowToast,
+  compact = false,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
@@ -295,6 +297,7 @@ export const LazadaHeader: React.FC<LazadaHeaderProps> = ({
         </div>
 
         {/* RedMart Category Strip */}
+        {!compact && (
         <div className="border-t border-[#F0F0F0] bg-white">
           <div className="max-w-[1188px] mx-auto px-4 h-[38px] flex items-center gap-6 overflow-x-auto text-[13px]">
             <div className="relative shrink-0">
@@ -358,6 +361,7 @@ export const LazadaHeader: React.FC<LazadaHeaderProps> = ({
             </nav>
           </div>
         </div>
+        )}
       </header>
 
       {/* Lightweight Utility Modal (App / Track / Care / Login) */}
