@@ -1,0 +1,6 @@
+{
+  "name": "RedMart on Lazada SG — Coca-Cola Zero Sugar (24 X 320ML) - Case",
+  "description": "Recreation of the Lazada Singapore RedMart product detail page for Coca-Cola Zero Sugar (24 X 320ML) - Case [Packaging May Vary], featuring interactive gallery zoom, pack variants, RedMart delivery slot selection, nutrition facts, reviews, Q&A, and cart drawer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
