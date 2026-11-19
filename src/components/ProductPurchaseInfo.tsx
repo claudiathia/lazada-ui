@@ -272,68 +272,70 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
         </div>
       </div>
 
-      {/* Promotions / Vouchers Row */}
-      <div className="mt-3.5 grid grid-cols-[92px_1fr] items-start gap-2 text-[13px]">
-        <span className="text-[#757575] pt-1">Promotions</span>
-        <div className="flex flex-wrap gap-2">
-          {RED_MART_VOUCHERS.map((voucher) => {
-            const collected = collectedVoucherIds.includes(voucher.id);
-            return (
-              <button
-                key={voucher.id}
-                type="button"
-                onClick={() => onCollectVoucher(voucher.id)}
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[12px] font-medium rounded-[2px] border transition-colors cursor-pointer whitespace-nowrap ${
-                  collected
-                    ? 'bg-[#F4FAF5] border-[#B6DEC1] text-[#146B3A]'
-                    : 'bg-[#FFF5EE] border-[#F57224]/40 text-[#F57224] hover:border-[#F57224]'
-                }`}
-                title={voucher.description}
-              >
-                {collected ? (
-                  <Check className="w-3.5 h-3.5" />
-                ) : (
-                  <Ticket className="w-3.5 h-3.5" />
-                )}
-                <span>
-                  {collected
-                    ? `${voucher.title} · Collected`
-                    : `${voucher.title} (Min. $${voucher.minSpend})`}
-                </span>
-              </button>
-            );
-          })}
+      {/* Promotions, Pack Size & Quantity Rows */}
+      <div className="mt-4 divide-y divide-[#F1F2F5] border-t border-[#F1F2F5]">
+        {/* Promotions / Vouchers Row */}
+        <div className="py-3 grid grid-cols-[84px_1fr] items-start gap-3 text-[13px]">
+          <span className="text-[#757575] leading-[28px]">Promotions</span>
+          <div className="flex flex-wrap gap-2">
+            {RED_MART_VOUCHERS.map((voucher) => {
+              const collected = collectedVoucherIds.includes(voucher.id);
+              return (
+                <button
+                  key={voucher.id}
+                  type="button"
+                  onClick={() => onCollectVoucher(voucher.id)}
+                  className={`inline-flex items-center gap-1.5 h-[28px] px-2.5 text-[11.5px] font-medium rounded-[2px] border transition-colors cursor-pointer whitespace-nowrap ${
+                    collected
+                      ? 'bg-[#F4FAF5] border-[#B6DEC1] text-[#146B3A]'
+                      : 'bg-[#FFF5EE] border-[#F57224]/40 text-[#F57224] hover:border-[#F57224]'
+                  }`}
+                  title={voucher.description}
+                >
+                  {collected ? (
+                    <Check className="w-3 h-3 shrink-0" />
+                  ) : (
+                    <Ticket className="w-3 h-3 shrink-0" />
+                  )}
+                  <span>
+                    {collected
+                      ? `${voucher.title} · Collected`
+                      : `${voucher.title} ($${voucher.minSpend}+)`}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      {/* Pack Size Variant Selector */}
-      <div className="mt-3.5 grid grid-cols-[92px_1fr] items-center gap-2 text-[13px]">
-        <span className="text-[#757575]">Pack Size</span>
-        <div className="flex flex-wrap gap-2">
-          {PRODUCT_VARIANTS.map((variant) => {
-            const isSelected = variant.id === selectedVariant.id;
-            return (
-              <button
-                key={variant.id}
-                type="button"
-                onClick={() => onSelectVariant(variant)}
-                className={`px-3 py-1.5 text-[12px] rounded-[2px] border transition-all cursor-pointer whitespace-nowrap ${
-                  isSelected
-                    ? 'border-[#F57224] bg-[#FFF8F4] text-[#F57224] font-semibold'
-                    : 'border-[#DCDFE6] bg-white text-[#424242] hover:border-[#9E9E9E]'
-                }`}
-              >
-                {variant.shortLabel} · ${variant.price.toFixed(2)}
-              </button>
-            );
-          })}
+        {/* Pack Size Variant Selector */}
+        <div className="py-3 grid grid-cols-[84px_1fr] items-start gap-3 text-[13px]">
+          <span className="text-[#757575] leading-[32px]">Pack Size</span>
+          <div className="flex flex-wrap gap-2">
+            {PRODUCT_VARIANTS.map((variant) => {
+              const isSelected = variant.id === selectedVariant.id;
+              return (
+                <button
+                  key={variant.id}
+                  type="button"
+                  onClick={() => onSelectVariant(variant)}
+                  className={`h-[32px] px-2.5 text-[12px] rounded-[2px] border transition-all cursor-pointer whitespace-nowrap tabular-nums ${
+                    isSelected
+                      ? 'border-[#F57224] bg-[#FFF8F4] text-[#F57224] font-semibold'
+                      : 'border-[#DCDFE6] bg-white text-[#424242] hover:border-[#9E9E9E]'
+                  }`}
+                >
+                  {variant.cansCount} × 320ml · ${variant.price.toFixed(2)}
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      {/* Quantity Selector + Red Loss-Avoidance Stock Scarcity (L) */}
-      <div className="mt-3.5 grid grid-cols-[92px_1fr] items-center gap-2 text-[13px]">
-        <span className="text-[#757575]">Quantity</span>
-        <div className="flex flex-wrap items-center gap-3">
+        {/* Quantity Selector + Red Loss-Avoidance Stock Scarcity (L) */}
+        <div className="py-3 grid grid-cols-[84px_1fr] items-center gap-3 text-[13px]">
+          <span className="text-[#757575]">Quantity</span>
+          <div className="flex flex-wrap items-center gap-3">
           <div className="inline-flex items-center border border-[#DCDFE6] rounded-[2px] bg-white">
             <button
               type="button"
@@ -368,18 +370,19 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
               <Plus className="w-3.5 h-3.5" />
             </button>
           </div>
-          <span className="inline-flex items-center gap-1 text-[12px] font-bold text-[#D92D20] tabular-nums">
-            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-            <span>
-              Only {selectedVariant.stock}{' '}
-              {selectedVariant.id === 'case-24' ? 'cartons' : 'packs'} left at this price
+            <span className="inline-flex items-center gap-1 text-[12px] font-bold text-[#D92D20] tabular-nums">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>
+                Only {selectedVariant.stock}{' '}
+                {selectedVariant.id === 'case-24' ? 'cartons' : 'packs'} left at this price
+              </span>
             </span>
-          </span>
+          </div>
         </div>
       </div>
 
       {/* Status Ladder Cue toward Free Priority Delivery (S) */}
-      <div className="mt-4 pt-3 border-t border-[#F0F0F0]">
+      <div className="pt-3 border-t border-[#F1F2F5]">
         <div className="flex items-center justify-between text-[12px] mb-1.5">
           <span className="text-[#424242]">
             {amountToFreeDelivery === 0 ? (
