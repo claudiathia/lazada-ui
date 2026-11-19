@@ -125,57 +125,59 @@ export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
         </div>
 
         {/* 3-Column Above-The-Fold Dashboard Grid: Original | Improved (7 Click Points) | CLOSERS Table */}
-        <div className="grid grid-cols-1 lg:grid-cols-[290px_430px_1fr] xl:grid-cols-[310px_460px_1fr] gap-4 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[290px_430px_1fr] xl:grid-cols-[310px_460px_1fr] gap-4 items-stretch">
           {/* COLUMN 1: ORIGINAL LAZADA SG LISTING (CONDENSED) */}
-          <div className="space-y-1.5">
-            <div className="text-[11px] font-semibold tracking-wider uppercase text-[#5A6475]">
+          <div className="flex flex-col gap-1.5">
+            <div className="h-[22px] flex items-center text-[11px] font-semibold tracking-wider uppercase text-[#5A6475]">
               Original · Lazada SG (Before)
             </div>
 
-            <div className="bg-white border border-[#DCDFE6] rounded-[4px] p-3.5 shadow-xs">
-              <div className="h-[175px] bg-white border border-[#F0F1F4] rounded-[2px] p-2 flex items-center justify-center">
-                <img
-                  src={mainCase.image}
-                  alt={PRODUCT_TITLE}
-                  referrerPolicy="no-referrer"
-                  className="max-h-full max-w-full object-contain"
-                />
-              </div>
+            <div className="flex-1 flex flex-col justify-between bg-white border border-[#DCDFE6] rounded-[18px] p-4 shadow-xs">
+              <div>
+                <div className="h-[175px] bg-white border border-[#F0F1F4] rounded-[10px] p-2 flex items-center justify-center">
+                  <img
+                    src={mainCase.image}
+                    alt={PRODUCT_TITLE}
+                    referrerPolicy="no-referrer"
+                    className="max-h-full max-w-full object-contain"
+                  />
+                </div>
 
-              <div className="mt-2.5 text-[11px] text-[#757575]">
-                Coca-Cola · Groceries &gt; Beverages
-              </div>
+                <div className="mt-2.5 text-[11px] text-[#757575]">
+                  Coca-Cola · Groceries &gt; Beverages
+                </div>
 
-              <h2 className="mt-0.5 text-[14px] font-medium text-[#212121] leading-snug">
-                {PRODUCT_TITLE}
-              </h2>
+                <h2 className="mt-0.5 text-[14px] font-medium text-[#212121] leading-snug">
+                  {PRODUCT_TITLE}
+                </h2>
 
-              <div className="mt-1.5 flex items-center gap-1 text-[11.5px]">
-                <span className="flex items-center gap-0.5">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-3 h-3 fill-[#FACA51] text-[#FACA51]" />
-                  ))}
-                </span>
-                <span className="font-medium text-[#212121] tabular-nums">4.9</span>
-                <span className="text-[#757575] tabular-nums">(1,482)</span>
-              </div>
+                <div className="mt-1.5 flex items-center gap-1 text-[11.5px]">
+                  <span className="flex items-center gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} className="w-3 h-3 fill-[#FACA51] text-[#FACA51]" />
+                    ))}
+                  </span>
+                  <span className="font-medium text-[#212121] tabular-nums">4.9</span>
+                  <span className="text-[#757575] tabular-nums">(1,482)</span>
+                </div>
 
-              <div className="mt-2.5 pt-2.5 border-t border-[#F0F0F0] flex items-baseline gap-2">
-                <span className="text-[22px] font-bold text-[#F57224] tabular-nums">
-                  ${mainCase.price.toFixed(2)}
-                </span>
-                <span className="text-[11.5px] text-[#9E9E9E] line-through tabular-nums">
-                  ${mainCase.originalPrice.toFixed(2)}
-                </span>
-                <span className="text-[11.5px] text-[#595959] tabular-nums">
-                  (-{mainCase.discountPercent}%)
-                </span>
-              </div>
+                <div className="mt-2.5 pt-2.5 border-t border-[#F0F0F0] flex items-baseline gap-2">
+                  <span className="text-[22px] font-bold text-[#F57224] tabular-nums">
+                    ${mainCase.price.toFixed(2)}
+                  </span>
+                  <span className="text-[11.5px] text-[#9E9E9E] line-through tabular-nums">
+                    ${mainCase.originalPrice.toFixed(2)}
+                  </span>
+                  <span className="text-[11.5px] text-[#595959] tabular-nums">
+                    (-{mainCase.discountPercent}%)
+                  </span>
+                </div>
 
-              <div className="mt-2 space-y-1 text-[11.5px] text-[#595959]">
-                <div>In Stock (48 cartons available)</div>
-                <div>RedMart Scheduled Delivery Tomorrow</div>
-                <div className="text-[#757575]">Free delivery on orders $60+</div>
+                <div className="mt-2 space-y-1 text-[11.5px] text-[#595959]">
+                  <div>In Stock (48 cartons available)</div>
+                  <div>RedMart Scheduled Delivery Tomorrow</div>
+                  <div className="text-[#757575]">Free delivery on orders $60+</div>
+                </div>
               </div>
 
               <button
@@ -184,7 +186,7 @@ export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
                   onAddCaseToCart();
                   onShowToast('Added baseline item to cart');
                 }}
-                className="mt-3 w-full h-[36px] bg-[#F57224] hover:bg-[#E06116] text-white text-[12.5px] font-semibold rounded-[2px] transition-colors cursor-pointer"
+                className="mt-3 w-full h-[38px] bg-[#F57224] hover:bg-[#E06116] text-white text-[12.5px] font-semibold rounded-[8px] transition-colors cursor-pointer"
               >
                 Add to Cart
               </button>
@@ -192,12 +194,12 @@ export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
           </div>
 
           {/* COLUMN 2: IMPROVED REDMART VIEW WITH 7 CLICK POINTS (CONDENSED ABOVE THE FOLD) */}
-          <div className="space-y-1.5">
-            <div className="text-[11px] font-semibold tracking-wider uppercase text-[#5A6475]">
+          <div className="flex flex-col gap-1.5">
+            <div className="h-[22px] flex items-center text-[11px] font-semibold tracking-wider uppercase text-[#5A6475]">
               Improved · 7 Click Points (Tap 1–7)
             </div>
 
-            <div className="bg-[#F8FAFC] border-2 border-[#D5DCE6] rounded-[18px] p-3 shadow-sm">
+            <div className="flex-1 flex flex-col justify-between bg-[#F8FAFC] border-2 border-[#D5DCE6] rounded-[18px] p-3 shadow-sm">
               {/* Compact Frame Bar */}
               <div className="flex items-center justify-between px-1.5 pb-2 mb-2 border-b border-[#E5E9F0] text-[10.5px] font-semibold text-[#334155]">
                 <span className="tabular-nums">9:41</span>
@@ -416,9 +418,9 @@ export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
             </div>
           </div>
 
-          {/* COLUMN 3: CONDENSED CLOSERS DESCRIPTIVE TABLE PANEL (RIGHT SIDE, NO SCROLLING) */}
-          <div className="space-y-1.5 lg:sticky lg:top-[130px]">
-            <div className="flex items-center justify-between">
+          {/* COLUMN 3: CONDENSED CLOSERS DESCRIPTIVE TABLE PANEL (RIGHT SIDE, MATCHED HEIGHT & ROUNDED) */}
+          <div className="flex flex-col gap-1.5">
+            <div className="h-[22px] flex items-center justify-between">
               <span className="text-[11px] font-semibold tracking-wider uppercase text-[#5A6475]">
                 CLOSERS Descriptive Table
               </span>
@@ -446,7 +448,7 @@ export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
             {!showAllTable ? (
               <section
                 aria-label={`CLOSERS Detail Table for Point ${activePoint.number}`}
-                className="bg-white border border-[#CBD5E1] rounded-[4px] shadow-sm overflow-hidden"
+                className="flex-1 flex flex-col justify-between bg-white border border-[#CBD5E1] rounded-[18px] shadow-sm overflow-hidden"
               >
                 {/* Compact Header */}
                 <div className="px-4 py-2.5 bg-[#0F146D] text-white flex items-center justify-between gap-2">
@@ -497,87 +499,89 @@ export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
                 </div>
 
                 {/* Condensed Vertical Key-Value Descriptive Table */}
-                <table className="w-full text-[12.5px] text-left border-collapse">
-                  <tbody className="divide-y divide-[#EEF2F6]">
-                    <tr>
-                      <th className="py-2.5 px-3.5 w-[132px] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wide text-[#64748B] align-top">
-                        CLOSER Applied
-                      </th>
-                      <td className="py-2.5 px-3.5">
-                        <div className="flex flex-wrap gap-2">
-                          {activePoint.principles.map((p) => (
-                            <div
-                              key={`${p.letter}-${p.name}`}
-                              className="inline-flex items-center gap-1.5 border border-[#E2E8F0] rounded-[3px] px-2 py-1 bg-[#FAFAFA]"
-                            >
-                              <span
-                                className="w-5 h-5 rounded-[2px] text-[11px] font-extrabold flex items-center justify-center shrink-0"
-                                style={{ backgroundColor: p.badgeBg, color: p.badgeText }}
+                <div className="flex-1 flex flex-col">
+                  <table className="w-full h-full text-[12.5px] text-left border-collapse">
+                    <tbody className="divide-y divide-[#EEF2F6]">
+                      <tr>
+                        <th className="py-3 px-4 w-[132px] bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wide text-[#64748B] align-middle">
+                          CLOSER Applied
+                        </th>
+                        <td className="py-3 px-4 align-middle">
+                          <div className="flex flex-wrap gap-2">
+                            {activePoint.principles.map((p) => (
+                              <div
+                                key={`${p.letter}-${p.name}`}
+                                className="inline-flex items-center gap-1.5 border border-[#E2E8F0] rounded-[6px] px-2 py-1 bg-[#FAFAFA]"
                               >
-                                {p.letter}
-                              </span>
-                              <span className="font-bold text-[#1E293B] text-[12px]">
-                                {p.name}
-                              </span>
-                              <span
-                                className="inline-flex items-center gap-0.5 ml-1"
-                                title={`Evidence: ${p.evidenceOutOf4}/4`}
-                              >
-                                {Array.from({ length: 4 }).map((_, idx) => (
-                                  <span
-                                    key={idx}
-                                    className={`w-1.5 h-2 rounded-[1px] ${
-                                      idx < p.evidenceOutOf4 ? 'bg-[#334155]' : 'bg-[#CBD5E1]'
-                                    }`}
-                                  />
-                                ))}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </td>
-                    </tr>
+                                <span
+                                  className="w-5 h-5 rounded-[3px] text-[11px] font-extrabold flex items-center justify-center shrink-0"
+                                  style={{ backgroundColor: p.badgeBg, color: p.badgeText }}
+                                >
+                                  {p.letter}
+                                </span>
+                                <span className="font-bold text-[#1E293B] text-[12px]">
+                                  {p.name}
+                                </span>
+                                <span
+                                  className="inline-flex items-center gap-0.5 ml-1"
+                                  title={`Evidence: ${p.evidenceOutOf4}/4`}
+                                >
+                                  {Array.from({ length: 4 }).map((_, idx) => (
+                                    <span
+                                      key={idx}
+                                      className={`w-1.5 h-2 rounded-[1px] ${
+                                        idx < p.evidenceOutOf4 ? 'bg-[#334155]' : 'bg-[#CBD5E1]'
+                                      }`}
+                                    />
+                                  ))}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </td>
+                      </tr>
 
-                    <tr>
-                      <th className="py-2.5 px-3.5 bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wide text-[#64748B] align-top">
-                        Original Lazada
-                      </th>
-                      <td className="py-2.5 px-3.5 text-[#475569] leading-snug">
-                        {activePoint.originalLazada}
-                      </td>
-                    </tr>
+                      <tr>
+                        <th className="py-3 px-4 bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wide text-[#64748B] align-middle">
+                          Original Lazada
+                        </th>
+                        <td className="py-3 px-4 text-[#475569] leading-snug align-middle">
+                          {activePoint.originalLazada}
+                        </td>
+                      </tr>
 
-                    <tr>
-                      <th className="py-2.5 px-3.5 bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wide text-[#64748B] align-top">
-                        Updated RedMart
-                      </th>
-                      <td className="py-2.5 px-3.5 text-[#0F172A] font-medium leading-snug bg-[#F8FAFC]/40">
-                        {activePoint.improvedRedMart}
-                      </td>
-                    </tr>
+                      <tr>
+                        <th className="py-3 px-4 bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wide text-[#64748B] align-middle">
+                          Updated RedMart
+                        </th>
+                        <td className="py-3 px-4 text-[#0F172A] font-medium leading-snug bg-[#F8FAFC]/40 align-middle">
+                          {activePoint.improvedRedMart}
+                        </td>
+                      </tr>
 
-                    <tr>
-                      <th className="py-2.5 px-3.5 bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wide text-[#64748B] align-top">
-                        Why It Works
-                      </th>
-                      <td className="py-2.5 px-3.5 text-[#334155] leading-snug">
-                        {activePoint.whyItWorks}
-                      </td>
-                    </tr>
+                      <tr>
+                        <th className="py-3 px-4 bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wide text-[#64748B] align-middle">
+                          Why It Works
+                        </th>
+                        <td className="py-3 px-4 text-[#334155] leading-snug align-middle">
+                          {activePoint.whyItWorks}
+                        </td>
+                      </tr>
 
-                    <tr>
-                      <th className="py-2.5 px-3.5 bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wide text-[#64748B] align-top">
-                        Guardrail
-                      </th>
-                      <td className="py-2.5 px-3.5 text-[#64748B] text-[12px] leading-snug">
-                        {activePoint.guardrail}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                      <tr>
+                        <th className="py-3 px-4 bg-[#F8FAFC] text-[11px] font-semibold uppercase tracking-wide text-[#64748B] align-middle">
+                          Guardrail
+                        </th>
+                        <td className="py-3 px-4 text-[#64748B] text-[12px] leading-snug align-middle">
+                          {activePoint.guardrail}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
                 {/* Condensed Footer */}
-                <div className="px-3.5 py-2 bg-[#F8FAFC] border-t border-[#E2E8F0] flex items-center justify-between text-[11.5px]">
+                <div className="px-4 py-3 bg-[#F8FAFC] border-t border-[#E2E8F0] flex items-center justify-between text-[11.5px]">
                   <button
                     type="button"
                     onClick={() => setShowAllTable(true)}
@@ -597,7 +601,7 @@ export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
               </section>
             ) : (
               /* CONDENSED ALL-7-POINTS MATRIX RIGHT IN COLUMN 3 */
-              <section className="bg-white border border-[#CBD5E1] rounded-[4px] shadow-sm overflow-hidden">
+              <section className="flex-1 flex flex-col justify-between bg-white border border-[#CBD5E1] rounded-[18px] shadow-sm overflow-hidden">
                 <div className="px-3.5 py-2.5 bg-[#0F146D] text-white flex items-center justify-between">
                   <h3 className="text-[13px] font-bold">All 7 CLOSERS Points Summary</h3>
                   <button
