@@ -65,16 +65,16 @@ export const NutriGradeBadge: React.FC<{ grade?: 'A' | 'B' | 'C' | 'D'; compact?
 
   return (
     <div
-      className="inline-flex items-stretch border border-[#CFCFCF] bg-white rounded-[3px] overflow-hidden select-none"
+      className="inline-flex items-stretch h-[34px] border border-[#CFCFCF] bg-white rounded-[3px] overflow-hidden select-none"
       title={`Singapore Nutri-Grade ${grade} (0% Sugar)`}
     >
-      <div className="bg-[#F6F6F6] px-1.5 py-1 flex flex-col justify-center border-r border-[#E0E0E0]">
-        <span className="text-[8px] font-extrabold tracking-wider text-[#222] leading-none">
+      <div className="bg-[#F6F6F6] px-2 flex flex-col justify-center border-r border-[#E0E0E0]">
+        <span className="text-[8.5px] font-extrabold tracking-wider text-[#222] leading-none">
           NUTRI-GRADE
         </span>
         <span className="text-[8px] text-[#666] leading-tight mt-0.5">0% Sugar</span>
       </div>
-      <div className="flex items-center gap-[2px] px-1 py-0.5 bg-white">
+      <div className="flex items-center gap-[2px] px-1.5 bg-white">
         {tiers.map((t) => {
           const isActive = t.key === grade;
           return (
@@ -98,17 +98,17 @@ export const NutriGradeBadge: React.FC<{ grade?: 'A' | 'B' | 'C' | 'D'; compact?
 
 export const HealthierChoiceMark: React.FC = () => (
   <div
-    className="inline-flex items-center gap-1.5 border border-[#D8E7DC] bg-[#F4FAF5] rounded-[3px] px-2 py-1 select-none"
+    className="inline-flex items-center gap-1.5 h-[34px] border border-[#CBE0D1] bg-[#F4FAF5] rounded-[3px] px-2.5 select-none"
     title="Singapore HPB Healthier Choice — Lower in Sugar"
   >
-    <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0" aria-hidden="true">
+    <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] shrink-0" aria-hidden="true">
       <circle cx="12" cy="12" r="10.5" fill="#E31837" />
       <path d="M12 4.5l4.8 4.8-4.8 4.8-4.8-4.8z" fill="#FFFFFF" opacity="0.92" />
       <path d="M7.5 14.5h9l-4.5 5z" fill="#FFFFFF" />
     </svg>
-    <div className="leading-none">
-      <div className="text-[9px] font-bold text-[#146B3A]">Healthier Choice</div>
-      <div className="text-[8px] text-[#4B6B56]">Lower in Sugar</div>
+    <div className="flex flex-col justify-center leading-none">
+      <span className="text-[9px] font-bold text-[#146B3A] leading-none">Healthier Choice</span>
+      <span className="text-[8px] text-[#4B6B56] leading-tight mt-0.5">Lower in Sugar</span>
     </div>
   </div>
 );

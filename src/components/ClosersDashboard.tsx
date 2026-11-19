@@ -235,7 +235,7 @@ export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
                       </div>
                       <div className="flex flex-wrap items-center gap-1.5">
                         <HealthierChoiceMark />
-                        <NutriGradeBadge grade="B" compact />
+                        <NutriGradeBadge grade="B" />
                       </div>
                     </div>
                   </div>

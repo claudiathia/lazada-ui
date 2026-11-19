@@ -307,31 +307,26 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
       </div>
 
       {/* Pack Size Variant Selector */}
-      <div className="mt-3.5 grid grid-cols-[92px_1fr] items-start gap-2 text-[13px]">
-        <span className="text-[#757575] pt-1.5">Pack Size</span>
-        <div>
-          <div className="text-[12px] font-medium text-[#212121] mb-2">
-            {selectedVariant.label}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {PRODUCT_VARIANTS.map((variant) => {
-              const isSelected = variant.id === selectedVariant.id;
-              return (
-                <button
-                  key={variant.id}
-                  type="button"
-                  onClick={() => onSelectVariant(variant)}
-                  className={`px-3 py-1.5 text-[12px] rounded-[2px] border transition-all cursor-pointer whitespace-nowrap ${
-                    isSelected
-                      ? 'border-[#F57224] bg-[#FFF8F4] text-[#F57224] font-semibold'
-                      : 'border-[#DCDFE6] bg-white text-[#424242] hover:border-[#9E9E9E]'
-                  }`}
-                >
-                  {variant.shortLabel} · ${variant.price.toFixed(2)}
-                </button>
-              );
-            })}
-          </div>
+      <div className="mt-3.5 grid grid-cols-[92px_1fr] items-center gap-2 text-[13px]">
+        <span className="text-[#757575]">Pack Size</span>
+        <div className="flex flex-wrap gap-2">
+          {PRODUCT_VARIANTS.map((variant) => {
+            const isSelected = variant.id === selectedVariant.id;
+            return (
+              <button
+                key={variant.id}
+                type="button"
+                onClick={() => onSelectVariant(variant)}
+                className={`px-3 py-1.5 text-[12px] rounded-[2px] border transition-all cursor-pointer whitespace-nowrap ${
+                  isSelected
+                    ? 'border-[#F57224] bg-[#FFF8F4] text-[#F57224] font-semibold'
+                    : 'border-[#DCDFE6] bg-white text-[#424242] hover:border-[#9E9E9E]'
+                }`}
+              >
+                {variant.shortLabel} · ${variant.price.toFixed(2)}
+              </button>
+            );
+          })}
         </div>
       </div>
 
