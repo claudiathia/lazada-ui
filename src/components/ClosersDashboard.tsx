@@ -24,12 +24,16 @@ import {
   REPEAT_BUYER_STATS,
   INITIAL_REVIEWS,
   TOP_FIVE_DRINKS,
+  RELATED_SHELF_PRODUCTS,
+  RelatedProduct,
 } from '../data/productData';
 import { HealthierChoiceMark, NutriGradeBadge, RedMartWordmark } from './SingaporeMarks';
 
 interface ClosersDashboardProps {
   onOpenFullPdp: (scrollToAnchor?: string) => void;
   onAddCaseToCart: () => void;
+  onQuickAddCompanion: (product: RelatedProduct) => void;
+  cartSubtotal: number;
   onShowToast: (msg: string) => void;
 }
 
@@ -43,6 +47,8 @@ function formatTimer(totalSeconds: number) {
 export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
   onOpenFullPdp,
   onAddCaseToCart,
+  onQuickAddCompanion,
+  cartSubtotal,
   onShowToast,
 }) => {
   const [selectedPointNum, setSelectedPointNum] = useState<number>(1);
@@ -351,7 +357,7 @@ export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
                   {renderClickBadge(5)}
                 </div>
 
-                {/* POINT 6: Free Priority Delivery Status Ladder + CTA */}
+                {/* POINT 6: Free Priority Delivery Status Ladder + "Other users like you also bought" + CTA */}
                 <div
                   onClick={() => handleSelectPoint(6)}
                   className={`flex items-center justify-between gap-2 px-2.5 py-2 rounded-[8px] border transition-all cursor-pointer ${
@@ -362,23 +368,72 @@ export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
                 >
                   <div className="flex-1 min-w-0 space-y-1.5">
                     <div>
-                      <div className="flex justify-between text-[10.5px] text-[#334155] mb-0.5">
-                        <span>
-                          <strong>$43.55</strong> away from <strong>Free Priority Delivery</strong>
-                        </span>
-                        <span className="tabular-nums text-[#64748B]">27%</span>
+                      {(() => {
+                        const remaining = Math.max(0, 60 - cartSubtotal);
+                        const pct = Math.min(100, Math.round((cartSubtotal / 60) * 100));
+                        return (
+                          <>
+                            <div className="flex justify-between text-[10.5px] text-[#334155] mb-0.5 tabular-nums">
+                              <span>
+                                {remaining === 0 ? (
+                                  <strong className="text-[#146B3A]">
+                                    Free Priority Delivery unlocked!
+                                  </strong>
+                                ) : (
+                                  <>
+                                    <strong>${remaining.toFixed(2)}</strong> away from{' '}
+                                    <strong>Free Priority Delivery</strong>
+                                  </>
+                                )}
+                              </span>
+                              <span className="text-[#64748B]">{pct}%</span>
+                            </div>
+                            <div className="w-full h-1 bg-[#E2E8F0] rounded-full overflow-hidden">
+                              <div
+                                className={`h-full transition-all duration-200 ${
+                                  remaining === 0 ? 'bg-[#146B3A]' : 'bg-[#F57224]'
+                                }`}
+                                style={{ width: `${pct}%` }}
+                              />
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+
+                    {/* "Other users like you also bought" compact top-up strip */}
+                    <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[4px] px-2 py-1.5 space-y-1">
+                      <div className="text-[10px] font-semibold text-[#334155]">
+                        Other users like you also bought:
                       </div>
-                      <div className="w-full h-1 bg-[#E2E8F0] rounded-full overflow-hidden">
-                        <div className="h-full bg-[#F57224] w-[27%]" />
+                      <div className="flex flex-wrap gap-1.5">
+                        {[RELATED_SHELF_PRODUCTS[1], RELATED_SHELF_PRODUCTS[5]].map((item) => (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onQuickAddCompanion(item);
+                            }}
+                            className="inline-flex items-center gap-1 bg-white border border-[#CBD5E1] hover:border-[#F57224] text-[10px] font-medium text-[#1E293B] px-1.5 py-0.5 rounded-[3px] cursor-pointer"
+                          >
+                            <span>{item.brand}</span>
+                            <span className="text-[#F57224] font-bold tabular-nums">
+                              ${item.price.toFixed(2)}
+                            </span>
+                            <span className="text-[#F57224] font-bold">+ Add</span>
+                          </button>
+                        ))}
                       </div>
                     </div>
+
                     <button
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         onAddCaseToCart();
                       }}
-                      className="w-full h-[32px] bg-[#F57224] hover:bg-[#E06116] text-white text-[12px] font-semibold rounded-[3px] transition-colors cursor-pointer"
+                      className="w-full h-[30px] bg-[#F57224] hover:bg-[#E06116] text-white text-[12px] font-semibold rounded-[3px] transition-colors cursor-pointer"
                     >
                       Add to Cart · ${mainCase.price.toFixed(2)}
                     </button>

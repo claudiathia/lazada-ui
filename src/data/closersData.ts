@@ -172,13 +172,27 @@ export const CLOSERS_CLICK_POINTS: ClosersClickPoint[] = [
   {
     number: 6,
     id: 'delivery-status-ladder',
-    shortTitle: 'Free Priority Delivery Status Ladder ($60 Tier)',
+    shortTitle: 'Free Delivery Ladder + "Users Like You Bought" Top-Ups',
     principles: [
       {
         letter: 'S',
         name: 'Status',
         evidenceOutOf4: 2,
         badgeBg: '#8F6A00',
+        badgeText: '#FFFFFF',
+      },
+      {
+        letter: 'O',
+        name: 'Own Identity',
+        evidenceOutOf4: 1,
+        badgeBg: '#5B3FA2',
+        badgeText: '#FFFFFF',
+      },
+      {
+        letter: 'R',
+        name: 'Recognition',
+        evidenceOutOf4: 2,
+        badgeBg: '#136F44',
         badgeText: '#FFFFFF',
       },
       {
@@ -190,13 +204,13 @@ export const CLOSERS_CLICK_POINTS: ClosersClickPoint[] = [
       },
     ],
     originalLazada:
-      'Free delivery minimum ($60.00) is tucked inside the right-hand Delivery Options sidebar text without visual progress.',
+      'Free delivery minimum ($60.00) is tucked inside the right-hand sidebar without progress cues or companion drink top-ups.',
     improvedRedMart:
-      'Places a dynamic progress bar directly above Buy Now / Add to Cart showing exact dollar distance to Free Priority Delivery.',
+      'Places a live Free Priority Delivery progress bar above the CTA paired with 1-click "+ Add" drinks ("Other users like you also bought").',
     whyItWorks:
-      'Climbing the Ladder: showing the next rung and exact gap makes adding another carton feel purposeful and rewarding.',
+      'Status shows exact distance to the $60 tier; Own Identity ("users like you") & Recognition validate peer drink pairings; Convenience lets buyers top up in 1 click without leaving the page.',
     guardrail:
-      'Update progress dynamically from live cart subtotal and current quantity without hidden fees.',
+      'Recommend genuinely complementary zero-sugar/pantry drinks and update delivery progress live with no hidden thresholds.',
     liveSectionAnchor: '#top',
   },
   {

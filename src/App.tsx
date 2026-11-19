@@ -265,6 +265,8 @@ export default function App() {
         <main className="flex-1">
           <ClosersDashboard
             onOpenFullPdp={handleOpenFullPdp}
+            onQuickAddCompanion={handleQuickAddRelated}
+            cartSubtotal={cartSubtotal}
             onAddCaseToCart={() => {
               const usualCase = PRODUCT_VARIANTS[0];
               setCartItems((prev) => {
@@ -341,6 +343,7 @@ export default function App() {
               onAddToCart={() => addMainProductToCart(false)}
               onBuyNow={() => addMainProductToCart(true)}
               onQuickReorder={handleQuickReorder}
+              onQuickAddCompanion={handleQuickAddRelated}
               onShowToast={showToast}
               reviewCount={1482}
               questionCount={questions.length}

@@ -21,10 +21,17 @@ import {
   PRODUCT_VARIANTS,
   RED_MART_VOUCHERS,
   REPEAT_BUYER_STATS,
+  RELATED_SHELF_PRODUCTS,
   ProductVariant,
+  RelatedProduct,
   ReviewItem,
 } from '../data/productData';
-import { NutriGradeBadge, HealthierChoiceMark, RedMartWordmark } from './SingaporeMarks';
+import {
+  NutriGradeBadge,
+  HealthierChoiceMark,
+  RedMartWordmark,
+  ShelfBeverageIllustration,
+} from './SingaporeMarks';
 
 interface ProductPurchaseInfoProps {
   selectedVariant: ProductVariant;
@@ -36,6 +43,7 @@ interface ProductPurchaseInfoProps {
   onAddToCart: () => void;
   onBuyNow: () => void;
   onQuickReorder: () => void;
+  onQuickAddCompanion: (product: RelatedProduct) => void;
   onShowToast: (msg: string) => void;
   reviewCount: number;
   questionCount: number;
@@ -60,6 +68,7 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
   onAddToCart,
   onBuyNow,
   onQuickReorder,
+  onQuickAddCompanion,
   onShowToast,
   reviewCount,
   questionCount,
@@ -409,6 +418,57 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
             }`}
             style={{ width: `${ladderPct}%` }}
           />
+        </div>
+
+        {/* Companion Drinks ("Other users like you also bought") to hit Free Delivery (O + R + C) */}
+        <div className="mt-3 bg-[#FAFAFA] border border-[#ECEEF2] rounded-[2px] p-2.5">
+          <div className="flex items-center justify-between gap-2 text-[11.5px] mb-2">
+            <span className="font-semibold text-[#212121]">
+              Other users like you also bought
+            </span>
+            <span className="text-[11px] text-[#146B3A] font-medium">
+              {amountToFreeDelivery === 0 ? 'Free delivery unlocked' : 'Top up for free delivery'}
+            </span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            {[RELATED_SHELF_PRODUCTS[1], RELATED_SHELF_PRODUCTS[4], RELATED_SHELF_PRODUCTS[5]].map(
+              (companion) => (
+                <div
+                  key={companion.id}
+                  className="bg-white border border-[#E5E7EB] rounded-[2px] p-2 flex items-center gap-2"
+                >
+                  <div className="w-9 h-9 shrink-0 border border-[#F2F3F5] rounded-[2px] bg-white p-0.5">
+                    {companion.image ? (
+                      <img
+                        src={companion.image}
+                        alt={companion.title}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-contain"
+                      />
+                    ) : companion.svgType ? (
+                      <ShelfBeverageIllustration type={companion.svgType} />
+                    ) : null}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[11px] font-medium text-[#212121] truncate">
+                      {companion.brand}
+                    </div>
+                    <div className="text-[11.5px] font-bold text-[#F57224] tabular-nums">
+                      ${companion.price.toFixed(2)}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onQuickAddCompanion(companion)}
+                    className="px-2 py-1 text-[11px] font-semibold border border-[#F57224] text-[#F57224] hover:bg-[#F57224] hover:text-white rounded-[2px] shrink-0 transition-colors cursor-pointer"
+                    aria-label={`Add ${companion.title} to cart`}
+                  >
+                    + Add
+                  </button>
+                </div>
+              )
+            )}
+          </div>
         </div>
       </div>
 
