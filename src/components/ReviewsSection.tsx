@@ -166,10 +166,25 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({
             </button>
           </div>
         ) : (
-          filteredReviews.map((rev) => {
+          filteredReviews.map((rev, idx) => {
             const helpfulActive = helpfulClickedIds.includes(rev.id);
+            const isTopFeatured = filter === 'all' && sortMode === 'relevance' && idx === 0;
             return (
-              <article key={rev.id} className="p-5 space-y-2.5">
+              <article
+                key={rev.id}
+                className={`p-5 space-y-2.5 ${
+                  isTopFeatured ? 'bg-[#FFFDF7] border-b-2 border-[#F5E8C8]' : ''
+                }`}
+              >
+                {isTopFeatured && (
+                  <div className="flex items-center justify-between text-[11px] font-bold text-[#9A6700] uppercase tracking-wide pb-1">
+                    <span>Top Highlighted Review · Most Helpful</span>
+                    <span className="tabular-nums">
+                      {rev.helpfulCount + (helpfulActive ? 1 : 0)} buyers found this helpful
+                    </span>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1">
                     {Array.from({ length: 5 }).map((_, i) => (

@@ -85,6 +85,12 @@ export const MAIN_SKU_ID = '11107987307';
 
 export const PRODUCT_TITLE = 'Coca-Cola Zero Sugar (24 X 320ML) - Case [Packaging May Vary]';
 
+export const REPEAT_BUYER_STATS = {
+  userPastPurchases: 3,
+  customersRepurchasedTwicePlus: 52,
+  dealDurationSeconds: 3 * 60 * 60 - 12, // ~3 hours countdown
+};
+
 export const PRODUCT_VARIANTS: ProductVariant[] = [
   {
     id: 'case-24',
@@ -96,7 +102,7 @@ export const PRODUCT_VARIANTS: ProductVariant[] = [
     price: 16.45,
     originalPrice: 21.60,
     discountPercent: 24,
-    stock: 48,
+    stock: 3,
     image: '/src/assets/images/coke_zero_case_main_1795070553630.jpg',
   },
   {
@@ -109,7 +115,7 @@ export const PRODUCT_VARIANTS: ProductVariant[] = [
     price: 9.20,
     originalPrice: 11.40,
     discountPercent: 19,
-    stock: 32,
+    stock: 5,
     image: '/src/assets/images/coke_zero_open_carton_1795070554932.jpg',
   },
   {
@@ -122,7 +128,7 @@ export const PRODUCT_VARIANTS: ProductVariant[] = [
     price: 4.95,
     originalPrice: 5.90,
     discountPercent: 16,
-    stock: 64,
+    stock: 9,
     image: '/src/assets/images/coke_zero_can_chilled_1795070554161.jpg',
   },
 ];
@@ -496,3 +502,82 @@ export const RATING_BREAKDOWN = [
   { stars: 2, count: 6 },
   { stars: 1, count: 6 },
 ];
+
+export interface TopDrinkRank {
+  rank: number;
+  id: string;
+  title: string;
+  brand: string;
+  price: number;
+  soldCountLabel: string;
+  repurchaseLabel: string;
+  isCurrentProduct?: boolean;
+  nutriGrade: 'A' | 'B' | 'C' | 'D';
+  image?: string;
+  svgType?: 'schweppes' | 'pokka' | 'dasani';
+  relatedProduct?: RelatedProduct;
+}
+
+export const TOP_FIVE_DRINKS: TopDrinkRank[] = [
+  {
+    rank: 1,
+    id: 'current-coke-zero',
+    title: 'Coca-Cola Zero Sugar (24 X 320ML) - Case',
+    brand: 'Coca-Cola',
+    price: 16.45,
+    soldCountLabel: '12.4K+ cases sold',
+    repurchaseLabel: '52 buyers repurchased 2+ times',
+    isCurrentProduct: true,
+    nutriGrade: 'B',
+    image: '/src/assets/images/coke_zero_case_main_1795070553630.jpg',
+  },
+  {
+    rank: 2,
+    id: 'rel-6',
+    title: 'Dasani Pure Drinking Water (24 X 600ML) - Case',
+    brand: 'Dasani',
+    price: 7.90,
+    soldCountLabel: '15K+ cases sold',
+    repurchaseLabel: '48 buyers repurchased 2+ times',
+    nutriGrade: 'A',
+    svgType: 'dasani',
+    relatedProduct: RELATED_SHELF_PRODUCTS[5],
+  },
+  {
+    rank: 3,
+    id: 'rel-1',
+    title: 'Coca-Cola Original Taste (24 X 320ML) - Case',
+    brand: 'Coca-Cola',
+    price: 16.45,
+    soldCountLabel: '10K+ cases sold',
+    repurchaseLabel: '41 buyers repurchased 2+ times',
+    nutriGrade: 'D',
+    image: '/src/assets/images/coke_classic_case_1795070554999.jpg',
+    relatedProduct: RELATED_SHELF_PRODUCTS[0],
+  },
+  {
+    rank: 4,
+    id: 'rel-5',
+    title: 'Pokka Jasmine Green Tea Less Sugar (24 X 300ML)',
+    brand: 'Pokka',
+    price: 14.50,
+    soldCountLabel: '6.4K cases sold',
+    repurchaseLabel: '37 buyers repurchased 2+ times',
+    nutriGrade: 'B',
+    svgType: 'pokka',
+    relatedProduct: RELATED_SHELF_PRODUCTS[4],
+  },
+  {
+    rank: 5,
+    id: 'rel-2',
+    title: 'Sprite Lemon-Lime Zero Sugar (24 X 320ML) - Case',
+    brand: 'Sprite',
+    price: 15.90,
+    soldCountLabel: '5K+ cases sold',
+    repurchaseLabel: '29 buyers repurchased 2+ times',
+    nutriGrade: 'B',
+    image: '/src/assets/images/sprite_zero_case_1795070554622.jpg',
+    relatedProduct: RELATED_SHELF_PRODUCTS[1],
+  },
+];
+

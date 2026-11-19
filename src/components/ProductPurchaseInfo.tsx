@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Star,
   Share2,
@@ -9,12 +9,20 @@ import {
   Plus,
   Ticket,
   Check,
+  Clock,
+  RotateCw,
+  Award,
+  AlertCircle,
+  CheckCircle2,
+  ThumbsUp,
 } from 'lucide-react';
 import {
   PRODUCT_TITLE,
   PRODUCT_VARIANTS,
   RED_MART_VOUCHERS,
+  REPEAT_BUYER_STATS,
   ProductVariant,
+  ReviewItem,
 } from '../data/productData';
 import { NutriGradeBadge, HealthierChoiceMark, RedMartWordmark } from './SingaporeMarks';
 
@@ -27,9 +35,19 @@ interface ProductPurchaseInfoProps {
   onCollectVoucher: (id: string) => void;
   onAddToCart: () => void;
   onBuyNow: () => void;
+  onQuickReorder: () => void;
   onShowToast: (msg: string) => void;
   reviewCount: number;
   questionCount: number;
+  topReview: ReviewItem;
+  cartSubtotal: number;
+}
+
+function formatCountdown(totalSeconds: number) {
+  const hrs = Math.floor(totalSeconds / 3600);
+  const mins = Math.floor((totalSeconds % 3600) / 60);
+  const secs = totalSeconds % 60;
+  return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 }
 
 export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
@@ -41,16 +59,34 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
   onCollectVoucher,
   onAddToCart,
   onBuyNow,
+  onQuickReorder,
   onShowToast,
   reviewCount,
   questionCount,
+  topReview,
+  cartSubtotal,
 }) => {
   const [wishlisted, setWishlisted] = useState(false);
   const [wishlistCount, setWishlistCount] = useState(842);
   const [priceMatchOpen, setPriceMatchOpen] = useState(false);
+  const [secondsLeft, setSecondsLeft] = useState(REPEAT_BUYER_STATS.dealDurationSeconds);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const unitPricePerCan = (selectedVariant.price / selectedVariant.cansCount).toFixed(2);
   const unitPricePer100ml = ((selectedVariant.price / selectedVariant.volumeMl) * 100).toFixed(2);
+  const savingsAmount = (selectedVariant.originalPrice - selectedVariant.price).toFixed(2);
+
+  // Status ladder math toward RedMart Free Scheduled Delivery ($60.00)
+  const freeDeliveryTarget = 60;
+  const projectedTotal = Math.max(cartSubtotal, selectedVariant.price * quantity);
+  const amountToFreeDelivery = Math.max(0, freeDeliveryTarget - projectedTotal);
+  const ladderPct = Math.min(100, (projectedTotal / freeDeliveryTarget) * 100);
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -73,12 +109,18 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
 
   return (
     <div className="flex flex-col">
-      {/* Top RedMart & Singapore Nutrition Strip */}
+      {/* Own Identity (Healthier Choice + Nutri-Grade B) & Recognition Strip */}
       <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-        <div className="flex items-center gap-2 text-[12px]">
+        <div className="flex flex-wrap items-center gap-2 text-[12px]">
           <RedMartWordmark size="sm" />
           <span className="text-[#9E9E9E]" aria-hidden="true">·</span>
-          <span className="font-medium text-[#146B3A]">Official Groceries</span>
+          <a
+            href="#top-drinks"
+            className="inline-flex items-center gap-1 font-semibold text-[#9A6700] hover:underline"
+          >
+            <Award className="w-3.5 h-3.5 text-[#D49B00]" />
+            <span>#1 Most Purchased Drink</span>
+          </a>
         </div>
         <div className="flex items-center gap-2">
           <HealthierChoiceMark />
@@ -86,14 +128,14 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
         </div>
       </div>
 
-      {/* Title */}
+      {/* Product Title */}
       <h1 className="text-[20px] sm:text-[22px] font-medium text-[#212121] leading-[1.32] tracking-[-0.01em]">
         {PRODUCT_TITLE}
       </h1>
 
-      {/* Rating, Q&A, Share & Wishlist Row */}
+      {/* Rating, Repeat-Buyer Recognition, Share & Wishlist Row */}
       <div className="mt-2.5 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2.5 text-[12px]">
+        <div className="flex flex-wrap items-center gap-2 text-[12px]">
           <a
             href="#reviews"
             className="inline-flex items-center gap-1 hover:underline text-[#1A9CB7]"
@@ -136,34 +178,71 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
         </div>
       </div>
 
-      {/* Brand Line */}
-      <div className="mt-2 text-[12px] text-[#757575] flex flex-wrap items-center gap-1.5">
+      {/* Brand + Social Recognition Line (R: 52 customers repurchased >2x) */}
+      <div className="mt-2 text-[12px] text-[#595959] flex flex-wrap items-center gap-1.5">
         <span>Brand:</span>
         <a href="#specifications" className="text-[#1A9CB7] hover:underline font-medium">
           Coca-Cola
         </a>
         <span className="text-[#DADCE0]" aria-hidden="true">|</span>
-        <a href="#shelf" className="text-[#1A9CB7] hover:underline">
-          More Beverages from Coca-Cola
-        </a>
+        <span className="text-[#146B3A] font-medium tabular-nums">
+          {REPEAT_BUYER_STATS.customersRepurchasedTwicePlus} customers repurchased this more than twice
+        </span>
       </div>
 
-      {/* Price Block */}
-      <div className="mt-3.5 py-3.5 border-y border-[#EFF0F5] bg-[#FAFAFA]/60 px-3 -mx-3 sm:mx-0 sm:px-3.5 rounded-[2px]">
+      {/* Stickiness + Convenience Returning Buyer Strip (S + C) */}
+      <div className="mt-3 px-3 py-2 bg-[#F7F9FC] border border-[#DCE3EE] rounded-[2px] flex flex-wrap items-center justify-between gap-2 text-[12px]">
+        <div className="flex items-center gap-2 text-[#212121]">
+          <RotateCw className="w-3.5 h-3.5 text-[#0F146D] shrink-0" />
+          <span>
+            You have purchased this item{' '}
+            <strong className="text-[#0F146D] tabular-nums">
+              {REPEAT_BUYER_STATS.userPastPurchases} times
+            </strong>{' '}
+            before
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={onQuickReorder}
+          className="text-[12px] font-semibold text-[#0F146D] hover:text-[#F57224] underline underline-offset-2 whitespace-nowrap cursor-pointer"
+        >
+          Buy Again (1-Click)
+        </button>
+      </div>
+
+      {/* Sale / Loss Avoidance & Emotion Urgency Price Block (L + E) */}
+      <div className="mt-3 py-3 border-y border-[#F2C6C6] bg-[#FFF5F5] px-3.5 rounded-[2px]">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+          <span className="inline-flex items-center gap-1.5 text-[12px] font-bold text-[#D92D20] uppercase tracking-wide">
+            <span>Limited-Time RedMart Deal</span>
+            <span aria-hidden="true">·</span>
+            <span className="tabular-nums">Save ${savingsAmount}</span>
+          </span>
+
+          <div
+            className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#D92D20] tabular-nums"
+            aria-live="off"
+          >
+            <Clock className="w-3.5 h-3.5 shrink-0" />
+            <span>{formatCountdown(secondsLeft)} left until deal ends</span>
+          </div>
+        </div>
+
         <div className="flex items-baseline gap-3">
-          <span className="text-[30px] font-bold text-[#F57224] leading-none tabular-nums">
+          <span className="text-[31px] font-extrabold text-[#D92D20] leading-none tabular-nums">
             ${selectedVariant.price.toFixed(2)}
           </span>
-          <span className="text-[14px] text-[#9E9E9E] line-through tabular-nums">
+          <span className="text-[14px] text-[#757575] line-through tabular-nums">
             ${selectedVariant.originalPrice.toFixed(2)}
           </span>
-          <span className="text-[13px] font-semibold text-[#212121] tabular-nums">
-            -{selectedVariant.discountPercent}%
+          <span className="px-1.5 py-0.5 bg-[#D92D20] text-white text-[12px] font-bold rounded-[2px] tabular-nums">
+            -{selectedVariant.discountPercent}% OFF
           </span>
         </div>
 
-        <div className="mt-1.5 flex flex-wrap items-center justify-between gap-2 text-[12px]">
-          <span className="text-[#757575] tabular-nums">
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-[12px]">
+          <span className="text-[#595959] tabular-nums">
             ${unitPricePerCan} / can · ${unitPricePer100ml} / 100ml
           </span>
 
@@ -194,7 +273,7 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
       </div>
 
       {/* Promotions / Vouchers Row */}
-      <div className="mt-4 grid grid-cols-[92px_1fr] items-start gap-2 text-[13px]">
+      <div className="mt-3.5 grid grid-cols-[92px_1fr] items-start gap-2 text-[13px]">
         <span className="text-[#757575] pt-1">Promotions</span>
         <div className="flex flex-wrap gap-2">
           {RED_MART_VOUCHERS.map((voucher) => {
@@ -216,7 +295,11 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
                 ) : (
                   <Ticket className="w-3.5 h-3.5" />
                 )}
-                <span>{collected ? `${voucher.title} · Collected` : `${voucher.title} (Min. $${voucher.minSpend})`}</span>
+                <span>
+                  {collected
+                    ? `${voucher.title} · Collected`
+                    : `${voucher.title} (Min. $${voucher.minSpend})`}
+                </span>
               </button>
             );
           })}
@@ -224,7 +307,7 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
       </div>
 
       {/* Pack Size Variant Selector */}
-      <div className="mt-4 grid grid-cols-[92px_1fr] items-start gap-2 text-[13px]">
+      <div className="mt-3.5 grid grid-cols-[92px_1fr] items-start gap-2 text-[13px]">
         <span className="text-[#757575] pt-1.5">Pack Size</span>
         <div>
           <div className="text-[12px] font-medium text-[#212121] mb-2">
@@ -252,8 +335,8 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
         </div>
       </div>
 
-      {/* Quantity Selector */}
-      <div className="mt-4 grid grid-cols-[92px_1fr] items-center gap-2 text-[13px]">
+      {/* Quantity Selector + Red Loss-Avoidance Stock Scarcity (L) */}
+      <div className="mt-3.5 grid grid-cols-[92px_1fr] items-center gap-2 text-[13px]">
         <span className="text-[#757575]">Quantity</span>
         <div className="flex flex-wrap items-center gap-3">
           <div className="inline-flex items-center border border-[#DCDFE6] rounded-[2px] bg-white">
@@ -290,14 +373,49 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
               <Plus className="w-3.5 h-3.5" />
             </button>
           </div>
-          <span className="text-[12px] text-[#757575] tabular-nums">
-            In Stock ({selectedVariant.stock} cartons available)
+          <span className="inline-flex items-center gap-1 text-[12px] font-bold text-[#D92D20] tabular-nums">
+            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+            <span>
+              Only {selectedVariant.stock}{' '}
+              {selectedVariant.id === 'case-24' ? 'cartons' : 'packs'} left at this price
+            </span>
           </span>
         </div>
       </div>
 
-      {/* Primary Dual CTA Row */}
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {/* Status Ladder Cue toward Free Priority Delivery (S) */}
+      <div className="mt-4 pt-3 border-t border-[#F0F0F0]">
+        <div className="flex items-center justify-between text-[12px] mb-1.5">
+          <span className="text-[#424242]">
+            {amountToFreeDelivery === 0 ? (
+              <span className="text-[#146B3A] font-semibold">
+                Free Scheduled Delivery unlocked ($60+ tier)
+              </span>
+            ) : (
+              <span>
+                <strong className="text-[#212121] tabular-nums">
+                  ${amountToFreeDelivery.toFixed(2)}
+                </strong>{' '}
+                away from <strong className="text-[#146B3A]">Free Priority Delivery</strong>
+              </span>
+            )}
+          </span>
+          <span className="text-[11px] text-[#757575] tabular-nums">
+            {Math.round(ladderPct)}%
+          </span>
+        </div>
+        <div className="w-full h-1.5 bg-[#EFF0F5] rounded-full overflow-hidden">
+          <div
+            className={`h-full transition-all duration-200 ${
+              amountToFreeDelivery === 0 ? 'bg-[#146B3A]' : 'bg-[#F57224]'
+            }`}
+            style={{ width: `${ladderPct}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Primary Dual CTA Row (C: Convenience) */}
+      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
         <button
           type="button"
           onClick={onBuyNow}
@@ -312,6 +430,44 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
         >
           Add to Cart
         </button>
+      </div>
+
+      {/* Highlighted Top Review Inside Listing (S Status + R Recognition) */}
+      <div className="mt-4 border border-[#ECEEF2] bg-[#FAFAFA] rounded-[2px] p-3">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+          <div className="flex items-center gap-1.5 text-[11px]">
+            <span className="font-bold text-[#9A6700] uppercase tracking-wide">
+              Top Review
+            </span>
+            <span className="text-[#DADCE0]" aria-hidden="true">·</span>
+            <span className="flex items-center gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="w-3 h-3 fill-[#FACA51] text-[#FACA51]" />
+              ))}
+            </span>
+            <span className="text-[#146B3A] font-medium inline-flex items-center gap-0.5">
+              <CheckCircle2 className="w-3 h-3" />
+              Verified
+            </span>
+          </div>
+          <span className="inline-flex items-center gap-1 text-[11px] text-[#595959] tabular-nums">
+            <ThumbsUp className="w-3 h-3 text-[#F57224]" />
+            {topReview.helpfulCount} found helpful
+          </span>
+        </div>
+
+        <p className="text-[12px] text-[#212121] leading-snug line-clamp-2">
+          “{topReview.comment}”
+        </p>
+
+        <div className="mt-1.5 flex items-center justify-between text-[11px] text-[#757575]">
+          <span>
+            {topReview.author} · {topReview.variant}
+          </span>
+          <a href="#reviews" className="text-[#1A9CB7] font-semibold hover:underline">
+            See all {reviewCount.toLocaleString()} reviews ↓
+          </a>
+        </div>
       </div>
     </div>
   );

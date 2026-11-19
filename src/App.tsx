@@ -173,6 +173,33 @@ export default function App() {
   };
 
   const totalCartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartSubtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const handleQuickReorder = () => {
+    const usualCase = PRODUCT_VARIANTS[0];
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.id === usualCase.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === usualCase.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [
+        ...prev,
+        {
+          id: usualCase.id,
+          title: PRODUCT_TITLE,
+          variantLabel: usualCase.label,
+          price: usualCase.price,
+          originalPrice: usualCase.originalPrice,
+          quantity: 1,
+          image: usualCase.image,
+        },
+      ];
+    });
+    showToast(`1-Click Reorder: Added ${usualCase.shortLabel} to RedMart Cart`);
+    setCartOpen(true);
+  };
 
   return (
     <div id="top" className="min-h-screen bg-[#EFF0F5] text-[#212121] flex flex-col">
@@ -230,9 +257,12 @@ export default function App() {
               onCollectVoucher={handleCollectVoucher}
               onAddToCart={() => addMainProductToCart(false)}
               onBuyNow={() => addMainProductToCart(true)}
+              onQuickReorder={handleQuickReorder}
               onShowToast={showToast}
               reviewCount={1482}
               questionCount={questions.length}
+              topReview={INITIAL_REVIEWS[0]}
+              cartSubtotal={cartSubtotal}
             />
           </div>
 
@@ -246,15 +276,15 @@ export default function App() {
           />
         </section>
 
-        {/* Product Details, Nutrition & Specifications */}
-        <ProductDetailsSection />
-
-        {/* Ratings & Reviews */}
+        {/* Bumped-up Ratings & Reviews (Status & Recognition) */}
         <ReviewsSection
           reviews={INITIAL_REVIEWS}
           onToggleHelpful={handleToggleHelpful}
           helpfulClickedIds={helpfulClickedIds}
         />
+
+        {/* Product Details, Nutrition & Specifications */}
+        <ProductDetailsSection />
 
         {/* Questions About This Product */}
         <QuestionsSection
@@ -262,9 +292,10 @@ export default function App() {
           onSubmitQuestion={handleSubmitQuestion}
         />
 
-        {/* Related RedMart Shelf */}
+        {/* Top 5 Most Purchased Drinks & Related RedMart Shelf */}
         <RelatedShelf
           onAddProduct={handleQuickAddRelated}
+          onAddCurrentProduct={() => addMainProductToCart(false)}
           onShowToast={showToast}
         />
       </main>
