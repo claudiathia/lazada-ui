@@ -26,8 +26,10 @@ import { QuestionsSection } from './components/QuestionsSection';
 import { RelatedShelf } from './components/RelatedShelf';
 import { CartDrawer, CartItem } from './components/CartDrawer';
 import { LazadaFooter } from './components/LazadaFooter';
+import { ClosersDashboard } from './components/ClosersDashboard';
 
 export default function App() {
+  const [viewMode, setViewMode] = useState<'dashboard' | 'pdp'>('dashboard');
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(PRODUCT_VARIANTS[0]);
   const [galleryIndex, setGalleryIndex] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
@@ -201,6 +203,20 @@ export default function App() {
     setCartOpen(true);
   };
 
+  const handleOpenFullPdp = (anchor?: string) => {
+    setViewMode('pdp');
+    setTimeout(() => {
+      if (anchor && anchor !== '#top') {
+        const el = document.querySelector(anchor);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+          return;
+        }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 60);
+  };
+
   return (
     <div id="top" className="min-h-screen bg-[#EFF0F5] text-[#212121] flex flex-col">
       {/* Top Lazada + RedMart Header */}
@@ -211,6 +227,72 @@ export default function App() {
         onShowToast={showToast}
       />
 
+      {/* Workspace Mode Switcher Bar */}
+      <div className="bg-white border-b border-[#E5E7EB]">
+        <div className="max-w-[1240px] mx-auto px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-[12px]">
+          <div className="flex items-center gap-1.5 bg-[#EFF0F5] p-1 rounded-[4px]">
+            <button
+              type="button"
+              onClick={() => setViewMode('dashboard')}
+              className={`px-3 py-1.5 rounded-[3px] font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                viewMode === 'dashboard'
+                  ? 'bg-white text-[#0F146D] shadow-xs'
+                  : 'text-[#595959] hover:text-[#212121]'
+              }`}
+            >
+              CLOSERS Comparison Dashboard (7 Click Points)
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('pdp')}
+              className={`px-3 py-1.5 rounded-[3px] font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                viewMode === 'pdp'
+                  ? 'bg-white text-[#F57224] shadow-xs'
+                  : 'text-[#595959] hover:text-[#212121]'
+              }`}
+            >
+              Full Live RedMart PDP
+            </button>
+          </div>
+          <span className="text-[#757575] hidden sm:inline">
+            Coca-Cola Zero Sugar (24 × 320ML) · Lazada SG / RedMart
+          </span>
+        </div>
+      </div>
+
+      {viewMode === 'dashboard' ? (
+        <main className="flex-1">
+          <ClosersDashboard
+            onOpenFullPdp={handleOpenFullPdp}
+            onAddCaseToCart={() => {
+              const usualCase = PRODUCT_VARIANTS[0];
+              setCartItems((prev) => {
+                const existing = prev.find((item) => item.id === usualCase.id);
+                if (existing) {
+                  return prev.map((item) =>
+                    item.id === usualCase.id ? { ...item, quantity: item.quantity + 1 } : item
+                  );
+                }
+                return [
+                  ...prev,
+                  {
+                    id: usualCase.id,
+                    title: PRODUCT_TITLE,
+                    variantLabel: usualCase.label,
+                    price: usualCase.price,
+                    originalPrice: usualCase.originalPrice,
+                    quantity: 1,
+                    image: usualCase.image,
+                  },
+                ];
+              });
+              showToast(`Added ${usualCase.shortLabel} to RedMart Cart`);
+            }}
+            onShowToast={showToast}
+          />
+        </main>
+      ) : (
+      <>
       {/* Main Content Container */}
       <main className="flex-1 max-w-[1188px] w-full mx-auto px-4 pt-3 pb-20 lg:pb-8 space-y-4">
         {/* Breadcrumb */}
@@ -325,6 +407,8 @@ export default function App() {
           Add to Cart
         </button>
       </div>
+      </>
+      )}
 
       {/* Cart Drawer */}
       <CartDrawer
