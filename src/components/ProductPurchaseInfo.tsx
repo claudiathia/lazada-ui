@@ -422,7 +422,7 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
 
         {/* Companion Drinks ("Other users like you also bought") to hit Free Delivery (O + R + C) */}
         <div className="mt-3 bg-[#FAFAFA] border border-[#ECEEF2] rounded-[2px] p-2.5">
-          <div className="flex items-center justify-between gap-2 text-[11.5px] mb-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 text-[11.5px] mb-2">
             <span className="font-semibold text-[#212121]">
               Other users like you also bought
             </span>
@@ -430,41 +430,48 @@ export const ProductPurchaseInfo: React.FC<ProductPurchaseInfoProps> = ({
               {amountToFreeDelivery === 0 ? 'Free delivery unlocked' : 'Top up for free delivery'}
             </span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             {[RELATED_SHELF_PRODUCTS[1], RELATED_SHELF_PRODUCTS[4], RELATED_SHELF_PRODUCTS[5]].map(
               (companion) => (
                 <div
                   key={companion.id}
-                  className="bg-white border border-[#E5E7EB] rounded-[2px] p-2 flex items-center gap-2"
+                  className="bg-white border border-[#E5E7EB] hover:border-[#F57224]/60 rounded-[2px] p-2.5 flex flex-col justify-between transition-colors"
                 >
-                  <div className="w-9 h-9 shrink-0 border border-[#F2F3F5] rounded-[2px] bg-white p-0.5">
-                    {companion.image ? (
-                      <img
-                        src={companion.image}
-                        alt={companion.title}
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-contain"
-                      />
-                    ) : companion.svgType ? (
-                      <ShelfBeverageIllustration type={companion.svgType} />
-                    ) : null}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-[11px] font-medium text-[#212121] truncate">
-                      {companion.brand}
+                  <div>
+                    <div className="h-14 w-full flex items-center justify-center bg-white rounded-[2px] mb-1.5">
+                      {companion.image ? (
+                        <img
+                          src={companion.image}
+                          alt={companion.title}
+                          referrerPolicy="no-referrer"
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      ) : companion.svgType ? (
+                        <div className="w-14 h-14">
+                          <ShelfBeverageIllustration type={companion.svgType} />
+                        </div>
+                      ) : null}
                     </div>
-                    <div className="text-[11.5px] font-bold text-[#F57224] tabular-nums">
+                    <div
+                      className="text-[11.5px] font-medium text-[#212121] leading-[1.3] line-clamp-2 min-h-[30px]"
+                      title={companion.title}
+                    >
+                      {companion.title}
+                    </div>
+                  </div>
+                  <div className="mt-2 pt-1.5 border-t border-[#F2F3F5] flex items-center justify-between gap-1.5">
+                    <span className="text-[12.5px] font-bold text-[#F57224] tabular-nums">
                       ${companion.price.toFixed(2)}
-                    </div>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => onQuickAddCompanion(companion)}
+                      className="px-2 py-0.5 text-[11px] font-semibold border border-[#F57224] text-[#F57224] hover:bg-[#F57224] hover:text-white rounded-[2px] shrink-0 transition-colors cursor-pointer"
+                      aria-label={`Add ${companion.title} to cart`}
+                    >
+                      + Add
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => onQuickAddCompanion(companion)}
-                    className="px-2 py-1 text-[11px] font-semibold border border-[#F57224] text-[#F57224] hover:bg-[#F57224] hover:text-white rounded-[2px] shrink-0 transition-colors cursor-pointer"
-                    aria-label={`Add ${companion.title} to cart`}
-                  >
-                    + Add
-                  </button>
                 </div>
               )
             )}

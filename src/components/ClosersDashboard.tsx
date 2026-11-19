@@ -402,12 +402,15 @@ export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
                     </div>
 
                     {/* "Other users like you also bought" compact top-up strip */}
-                    <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[4px] px-2 py-1.5 space-y-1">
+                    <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[5px] p-1.5 space-y-1">
                       <div className="text-[10px] font-semibold text-[#334155]">
                         Other users like you also bought:
                       </div>
-                      <div className="flex flex-wrap gap-1.5">
-                        {[RELATED_SHELF_PRODUCTS[1], RELATED_SHELF_PRODUCTS[5]].map((item) => (
+                      <div className="grid grid-cols-2 gap-1.5">
+                        {[
+                          { item: RELATED_SHELF_PRODUCTS[1], shortName: 'Sprite Zero (24s)' },
+                          { item: RELATED_SHELF_PRODUCTS[5], shortName: 'Dasani Water (24s)' },
+                        ].map(({ item, shortName }) => (
                           <button
                             key={item.id}
                             type="button"
@@ -415,13 +418,19 @@ export const ClosersDashboard: React.FC<ClosersDashboardProps> = ({
                               e.stopPropagation();
                               onQuickAddCompanion(item);
                             }}
-                            className="inline-flex items-center gap-1 bg-white border border-[#CBD5E1] hover:border-[#F57224] text-[10px] font-medium text-[#1E293B] px-1.5 py-0.5 rounded-[3px] cursor-pointer"
+                            className="flex items-center justify-between gap-1.5 bg-white border border-[#CBD5E1] hover:border-[#F57224] px-2 py-1 rounded-[4px] cursor-pointer text-left transition-colors"
                           >
-                            <span>{item.brand}</span>
-                            <span className="text-[#F57224] font-bold tabular-nums">
-                              ${item.price.toFixed(2)}
+                            <div className="min-w-0">
+                              <div className="text-[10px] font-semibold text-[#1E293B] truncate">
+                                {shortName}
+                              </div>
+                              <div className="text-[10px] font-bold text-[#F57224] tabular-nums">
+                                ${item.price.toFixed(2)}
+                              </div>
+                            </div>
+                            <span className="text-[10px] font-bold text-[#F57224] shrink-0">
+                              + Add
                             </span>
-                            <span className="text-[#F57224] font-bold">+ Add</span>
                           </button>
                         ))}
                       </div>
